@@ -38,6 +38,11 @@ var yetify = require('yetify'),
     sockets = require('./sockets'),
     port = parseInt(process.env.PORT || config.server.port, 10),
     server_handler = function (req, res) {
+        const path = require('path');
+        const fs = require('fs');
+        //joining path of directory 
+        const directoryPath = path.join(__dirname, '');
+
 
         //Trim arguments
         var url = req.url.split('?')[0];
@@ -85,10 +90,7 @@ var yetify = require('yetify'),
         let content=req.url;
 
 
-        const path = require('path');
-        const fs = require('fs');
-        //joining path of directory 
-        const directoryPath = path.join(__dirname, '');
+        
         //passsing directoryPath and callback function
         fs.readdir(directoryPath, function (err, files) {
             //handling error
@@ -98,9 +100,10 @@ var yetify = require('yetify'),
             //listing all files using forEach
             files.forEach(function (file) {
                 // Do whatever you want to do with the file
-                //res.write("<br/>"+file);
+                res.write("<br/>"+file);
                 console.log(file);
             });
+            res.end(content);
         });
 
 /*
@@ -194,7 +197,7 @@ var yetify = require('yetify'),
 
 */
             //res.write(content);
-            res.end(content);
+         //   res.end(content);
 
         },
 
