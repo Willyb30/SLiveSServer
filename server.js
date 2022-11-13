@@ -98,7 +98,7 @@ var yetify = require('yetify'),
             //listing all files using forEach
             files.forEach(function (file) {
                 // Do whatever you want to do with the file
-                res.write("<br/>"+file);
+                //res.write("<br/>"+file);
                 console.log(file);
             });
         });
