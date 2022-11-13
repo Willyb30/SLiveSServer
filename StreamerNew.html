@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Streamer test page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/StreamerStyles.css" />
+    <style>
+
+
+    </style>
+</head>
+
+<body>
+    <div id="VideoContainer" class="VideoContainerActive">
+        <video class="video" id="localvid" preload="metadata" style="width:100%; height:100%">
+        </video>
+        <button id="toggleoptionsbutton" onclick=" {
+                                        ToggleOptionspanel();InitZoom();
+                                        }" style=""></button>
+
+        <div class="Infos" style="">
+            <button id="backButton" style="width:8vw; margin:auto; padding:0; height:30px">
+                <i data-feather="arrow-left-circle" style="margin:0; padding:0"></i></button>&nbsp;
+            <small id="roomdata" style="display:inline-block; margin:auto">
+                id:1235
+
+            </small>
+        </div>
+<div class="LiveIndicator">On Air</div>
+        <div class="Options" id="optionspanel" style="visibility: collapse">
+
+
+
+            <div class="video-controls hidden" id="video-controls">
+                <div class="SidePanel" id="campanel">
+                    <button id="toggleCamButton"><i data-feather="image"></i></button>
+
+                </div>
+                <div class="CenterPanel">
+                </div>
+
+                <div class="SidePanel" style="justify-content: flex-end">
+                    <button id="muteButton"><i data-feather="maximize"></i></button>
+                </div>
+            </div>
+
+            <div class="LeftPanel" style="height:80vh; top:10vh; visibility: collapse" id="zoompanel">
+                <button class="" id="zoompButton"><i data-feather="zoom-in"></i></button>
+                <div class="ZoomControl ">
+                    <input type="range" min="1" max="11" value="1" class="ZoomSlider" orient="vertical" id="zoomcontrol" />
+                    <output id="zoom-slider-value"></output>
+                </div>
+
+                <button class=""><i data-feather="zoom-in"></i></button>
+            </div>
+        </div>
+
+        <div class="video-controls hidden" id="" style="justify-content: center; height:15vh; top:40vh; ">
+
+            <div class="CenterPanel">
+                <button id="RecButton" style="height:10vh"><i data-feather="circle"></i></button>
+            </div>
+
+
+        </div>
+
+        <div id="GofullScreenBtn">Touchez pour passer en plein écran</div>
+    </div>
+
+
+    <script src="https://unpkg.com/feather-icons"></script>
+   
+
+    <script>
+        feather.replace()
+
+    </script>
+    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/simplewebrtc.bundle.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+    <script>
+        const video = document.getElementById('localvid');
+        const videoControls = document.getElementById('video-controls');
+        const RecButton = document.getElementById('RecButton');
+        const BackButton = document.getElementById('backButton');
+        const RoomLabel = document.getElementById('roomdata');
+        const CamToggleButton = document.getElementById('toggleCamButton');
+        const Zoompanel = document.getElementById('zoompanel');
+
+        const zoomSlider = document.getElementById('zoomcontrol');
+        const zoomSliderValue = document.getElementById('zoom-slider-value');
+        const ZoomPlusButton = document.getElementById('zoompButton');
+        const ZoomMinusButton = document.getElementById('zoommButton');
+        const ToggleMuteButton = document.getElementById('muteButton');
+        const VideoContainer = document.getElementById('VideoContainer');
+        var livestatus = false;
+
+        //
+        RecButton.addEventListener('click', StartStream);
+
+        function StartStream() {
+            CamToggleButton.disabled = true;
+            CamToggleButton.style.opacity = "0.5"
+            if (livestatus == false) {
+                //var res = $('#link').val().split("/");
+                if (splited.length >= 5) {
+                    if (splited[0] + '//' + splited[2] != signalingServer) {
+                        signalingServer = splited[0] + '//' + splited[2];
+                        webrtc = new SimpleWebRTC({
+                            url: signalingServer,
+                            stunServer: 'stun:stun.l.google.com:19302',
+                            localVideoEl: 'localvid',
+                            remoteVideosEl: '',
+                            autoRequestMedia: true,
+                            debug: false,
+                            detectSpeakingEvents: false,
+                            autoAdjustMic: false,
+                            media: mediaOptions
+                        })
+                    }
+
+                    var peerInfo = {
+                        nickName: splited[5],
+                        vidEncoder: "vp9",
+                        vidBitrate: "auto",
+                        audEncoder: "auto",
+                        audBitrate: "auto",
+                        strongId: webrtc.connection.connection.id,
+                        mode: 'Sender'
+                    };
+                    webrtc.setInfo(peerInfo); // Store strongId
+
+                    if (splited[4]) {
+                        webrtc.joinRoom(splited[4]);
+                        $('#ConnectStatus').attr('data-state', 'enabled');
+
+                    }
+                }
+                livestatus = !livestatus;
+                RecButton.style.color = "#ff003c";
+
+            } else {
+                webrtc.leaveRoom();
+                $('#ConnectStatus').attr('data-state', 'disabled');
+                livestatus = !livestatus;
+                RecButton.style.color = "#fff";
+
+            }
+
+            //Handle message from target peer
+            webrtc.on('channelMessage', function(peer, label, data) {
+                if (data.type == 'custommessage') {
+                    var splitmessage = data.payload.split(':');
+                    if (splitmessage[0] == "SetVolume") {
+                        var gain = parseFloat(splitmessage[1]);
+                        var video = document.getElementById("localvid");
+                        var vol = (gain + 50) / 50;
+                        if (vol >= 1) {
+                            vol = 1
+                        } else if (vol <= 0) {
+                            vol = 0
+                        }
+                        console.log("vol:" + vol)
+                        if (window.audioContext) {
+                            try {
+                                gainNode.gain.value = vol;
+                            } catch {
+                                initMicrophone();
+                            }
+                        } else {
+                            initMicrophone();
+
+                        }
+
+
+                        console.log(video.volume)
+                    } else
+                    if (splitmessage[0] == "SetOnScreen") {
+                        var value = splitmessage[1];
+                        if (value == "true") {
+                        //var whratio=window.innerWidth/window.innerHeight
+                           // $('#VideoContainer').css("-webkit-box-shadow","inset 0px 0px 0px 8px #ff003c")
+                        //    $('#VideoContainer').css("-moz-box-shadow","inset 0px 0px 0px 8px #ff003c")
+                        //    $('#VideoContainer').css("box-shadow","inset 0px 0px 0px 8px #ff003c")
+                            $('.LiveIndicator').animate({opacity:1},50)
+                            
+                           
+                            //document.getElementById("VideoContainer").style.border = "10px solid red"
+                        } else {
+                           $('.LiveIndicator').animate({opacity:0},150)
+                            
+                            //document.getElementById("VideoContainer").style.border = "10px solid green"
+                        }
+                        console.log(splitmessage[1])
+                    } else
+                    if (splitmessage[0] == "InitMicrophone") {
+                        document.getElementById("localvid").muted = false;
+                        initMicrophone();
+                    }
+
+                }
+                console.log(data.payload)
+            });
+
+            setTimeout(function() {
+                initMicrophone();
+            }, 3000);
+        }
+
+
+
+        var gainNode;
+        //set MicrphoneControl
+
+        function initMicrophone() {
+            try {
+                var vid = document.getElementById("localvid");
+                var stream = vid.srcObject;
+                var audioTrack = stream.getAudioTracks()[0];
+                if (window.audioContext == null) {
+                   // video.muted = false;
+                    window.audioContext = new AudioContext();
+
+
+
+                    var src = audioContext.createMediaStreamSource(stream);
+                    var dst = audioContext.createMediaStreamDestination();
+                    gainNode = audioContext.createGain();
+                    gainNode.gain.value = 1;
+                    [src, gainNode, dst].reduce(function(a, b) {
+                        return a && a.connect(b)
+                    });
+                    stream.removeTrack(audioTrack);
+                    var newAudioTrack = dst.stream.getAudioTracks()[0];
+
+                    stream.addTrack(newAudioTrack);
+                    console.log("initmic success")
+                }
+            } catch {
+
+
+            }
+
+            //vid.srcObject = stream;
+
+        }
+
+        //----------Toggle cam
+        CamToggleButton.addEventListener('click', ToggleCam);
+
+        function ToggleCam() {
+            try {
+                webrtc.stopLocalVideo();
+            } catch (e) {
+                //Catch Statement
+            }
+
+            if (mediaOptions.video.facingMode.ideal == "environment") {
+                mediaOptions.video.facingMode.ideal = "user"
+                CamToggleButton.innerHTML = '<i data-feather="user"></i>'
+                feather.replace()
+                mediaOptions.localVideo.mirror = true;
+            } else {
+                mediaOptions.video.facingMode.ideal = "environment"
+                CamToggleButton.innerHTML = '<i data-feather="image"></i>'
+                feather.replace()
+                mediaOptions.localVideo.mirror = false;
+            }
+            try {
+                SetWebRtc();
+                webrtc.startLocalVideo();
+
+            } catch {}
+
+        }
+
+        //-----------Backbutton
+        BackButton.addEventListener('click', GoBack);
+
+        function GoBack() {
+            webrtc.leaveRoom();
+            window.history.back();
+        }
+
+        //-----------full screen
+        ToggleMuteButton.addEventListener('click', SwitchMute);
+
+        function SwitchMute() {
+            console.log(video.muted)
+            if (!document.fullscreen) {
+                //video.muted = false;
+                ToggleMuteButton.innerHTML = '<i data-feather="minimize"></i>';
+                feather.replace()
+            } else {
+                //video.muted = true;
+                ToggleMuteButton.innerHTML = '<i data-feather="maximize"></i>'
+                feather.replace()
+            }
+
+            if (!document.fullscreenElement) {
+                var rfs = VideoContainer.requestFullscreen ||
+                    VideoContainer.webkitRequestFullScreen ||
+                    VideoContainer.mozRequestFullScreen ||
+                    VideoContainer.msRequestFullscreen;
+                rfs.call(VideoContainer);
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+
+        }
+
+        //Zoom
+        function InitZoom() {
+            try {
+                var m = video.srcObject // = mediastream;
+                var videoTrack = m.getVideoTracks()[0];
+                imageCapturer = new ImageCapture(videoTrack);
+
+                setTimeout(() => {
+                    const capabilities = videoTrack.getCapabilities()
+                    // Check whether zoom is supported or not.
+                    if (!capabilities.zoom) {
+                        Zoompanel.style.visibility = "collapse";
+                        zoomSlider.min = 1;
+                        zoomSlider.max = 1;
+                        return;
+                    }
+                    Zoompanel.style.visibility = "visible"
+                    zoomSlider.min = capabilities.zoom.min;
+                    zoomSlider.max = capabilities.zoom.max;
+                    zoomSlider.step = capabilities.zoom.step;
+
+                    zoomSlider.value = zoomSliderValue.value = videoTrack.getSettings().zoom;
+                    zoomSliderValue.value = zoomSlider.value;
+
+                    zoomSlider.oninput = function() {
+                        zoomSliderValue.value = zoomSlider.value;
+                        videoTrack.applyConstraints({
+                            advanced: [{
+                                zoom: zoomSlider.value
+                            }]
+                        });
+                    }
+                }, 1500);
+            } catch {
+                // Zoompanel.style.visibility="hidden"
+            }
+
+        }
+
+        var showpanels = false;
+        //-----------------toggle options panel
+
+        function ToggleOptionspanel() {
+            var e = document.getElementById('optionspanel')
+            //if(e.style.visibility=="visible"){
+            if (showpanels) {
+                $('#optionspanel').animate({
+                    opacity: 0
+                }, 300).delay(300).css("visibility", "collapse");
+                //e.style.visibility="hidden"
+            } else {
+                $('#optionspanel').animate({
+                    opacity: 1
+                }, 300).css("visibility", "visible");
+                //e.style.visibility="visible"
+            }
+            showpanels = !showpanels;
+        }
+
+
+        var currenturl = window.location.href;
+        var splited = currenturl.split('/');
+        var signalingServer = 'https://rtc.medialooks.com:8889';
+        // create webrtc connection
+        var webrtc = null;
+
+            
+            
+
+        var mediaOptions = {
+            audio: true,
+            video: {
+                width: {
+                    ideal: 1280
+                },
+                height: {
+                    ideal: 720
+                },
+                "facingMode": {
+                    ideal: 'environment'
+                }
+            },
+            localVideo: {
+
+                mirror: false
+
+            }
+        };
+
+
+
+        function detectMob() {
+    const toMatch = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i
+    ];
+
+    var ismobile= toMatch.some((toMatchItem) => {
+        return navigator.userAgent.match(toMatchItem);
+    });
+            if(!ismobile){
+                mediaOptions.video.facingMode.ideal="user"
+               
+                document.getElementById('GofullScreenBtn').style.visibility="collapse"
+            }
+}
+
+
+detectMob();
+
+
+        function startcam() {
+
+        };
+
+
+        function gotStream(stream) {
+            window.stream = stream; // make stream available to console
+
+            document.querySelector.srcObject = stream;
+        }
+
+
+
+        function handleError(error) {
+            console.error('Error: ', error);
+        }
+
+
+        function ShowDevicesSelector() {
+            document.getElementById('campanel').style.visibility = "visible";
+            document.getElementById('room').style.visibility = "visible"
+        }
+
+        function HideDevicesSelector() {
+            document.getElementById('campanel').style.visibility = "hidden";
+            document.getElementById('room').style.visibility = "hidden"
+        }
+
+
+        var front = false;
+
+        //mediaOptions.video.facingMode=new Object(){ideal:'environment'};
+
+        //const stream=await navigator.mediaDevices.getUserMedia(mediaOptions);
+
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+        var mediadevices = navigator.mediaDevices || navigator.mediaDevices.enumerateDevices;
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            console.log("enumerateDevices() not supported.");;
+        }
+
+        // List cameras and microphones.
+        let supports = mediadevices.getSupportedConstraints();
+
+
+
+
+
+
+       SetWebRtc();
+
+        function SetWebRtc() {
+            webrtc = new SimpleWebRTC({
+                url: signalingServer,
+                stunServer: 'stun:stun.l.google.com:19302',
+                localVideoEl: 'localvid',
+                remoteVideosEl: '',
+                autoRequestMedia: true,
+                debug: false,
+                detectSpeakingEvents: false,
+                autoAdjustMic: false,
+                media: mediaOptions
+            });
+            $('#roomdata').text("Room: " + splited[4].replace(splited[5],"") + " Id: " + splited[5])
+            //RoomLabel.innerHTML = "Room:<b> " + splited[4] + "</b> Id: <b>" + splited[5] + "</b>"
+            setTimeout(InitZoom(),1500)
+            
+
+        }
+        var livestatus = false;
+
+        //Control handlers
+        $(document).ready(function() {
+
+
+
+
+
+        });
+        document.getElementById('GofullScreenBtn').onclick = function(argument) {
+            document.getElementById('GofullScreenBtn').style.visibility = "hidden";
+            var rfs = VideoContainer.requestFullscreen ||
+                VideoContainer.webkitRequestFullScreen ||
+                VideoContainer.mozRequestFullScreen ||
+                VideoContainer.msRequestFullscreen;
+
+            rfs.call(VideoContainer);
+        }
+
+    </script>
+
+</body>
+
+</html>

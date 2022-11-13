@@ -1,0 +1,398 @@
+<html>
+
+<head>
+    <style>
+        body,html{background-color:#222;color:white; margin:10vh 0; padding:0;}
+        
+        body,
+        p,
+        a,
+        small,
+        div,
+        h1,
+        h2,
+        h3,
+        button,
+        textarea,
+        input {
+            font-family: segoe ui, helvetica, roboto, arial, sans-serif;
+            font-size: 2vh;
+            font-weight: bold;
+        }
+        button:focus {
+    outline: none;
+}
+
+        div {
+            outline: 0px solid blue;
+            display: flex;
+            flex-grow: 1;
+            border: 0px;
+            border-radius: 0
+        }
+
+        h3,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        p {
+            font-weight: normal
+        }
+
+        small {
+            font-size: 1vh;
+            font-weight: normal
+        }
+
+        h3 {
+            font-size: 3vh
+        }
+        button,.TabBtn,
+        .button-period {
+            border: none;
+            margin: 1px;
+            padding: 0.5vh;
+            display: flex;
+            flex-grow: 1;
+            text-align: center;
+            justify-content: center;
+            height:10vh;
+            align-items: center; justify-content: center
+        }
+
+        .button-period{color:white; background-color: transparent}
+
+        .Vertical {
+            flex-direction: column
+        }
+
+        .TeamScore {
+            width: 6vh;
+            font-size: 5vh;
+            font-weight: 600; flex-grow:0
+        }
+
+
+        
+
+
+        ul {
+            padding: 0;
+            display: block
+        }
+
+        #messages li {
+            display: block;
+            width: 90%;
+            list-style: none;
+            float: left;
+            background-color: ghostwhite;
+            text-indent: 0;
+            padding: 0;
+            margin: 0
+        }
+
+        #messages .me {
+            float: right;
+            background-color: yellow
+        }
+
+        small,
+        p {
+            margin: 0;
+            padding: 0
+        }
+
+        .StrmrStudio {
+            background-color: #ff003c !important
+        }
+
+        .Center {
+            text-align: center;
+            justify-content: center;
+            justify-items: center
+        }
+
+        .VCenter {
+            align-self: center;
+            vertical-align: middle;
+            justify-content: center;
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+    <div id="bkg" style="width:100%; height:100vh; z-index: 0; position: fixed; background-color:black; top:0; opacity: 0.3"></div>
+    <div style="width:100%; display:block;z-index: 1; position: absolute; top:0">
+    
+    
+    <style>
+    
+    </style>
+    
+    <div class="periods" id="periodsPanel">
+        <button class="button-period" id="Period1 button-period">1</button>
+        <button class="button-period" id="Period2 button-period">2</button>
+        <button class="button-period" id="Period3 button-period">3</button>
+        <button class="button-period" id="Period4 button-period">4</button>
+        <button class="button-period" id="Period5 button-period">OT</button>
+    </div>
+
+    <style>
+        .GameInfo{padding:1vh 0; background-color:#222;}
+        .TeamData,.TeamData p,.TeamData h3{text-transform: uppercase}
+        
+        .GameInfo {}
+
+        .GameInfo .TeamColor {
+            width: 0.5vh;
+            flex-grow: 0;
+        }
+
+        .GameInfo .TeamData {
+            padding-left: 1vh
+        }
+        
+        .TimerBar {
+            max-width:50vh;
+            
+            border-radius: 1vh;overflow:hidden;; padding:0.5vh;
+            margin-right:1vh
+            
+        }
+
+        .timebutton {
+            border: 0.1vh solid white;
+            border-radius: 0vh;
+            color: white;
+            background-color: transparent;
+            width: 8vh;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin: 0.1vh 0.2vh 0.2vh 0.2vh;
+            padding:0.5vh 0.5vh !important;
+           
+        }
+
+        .TimerBar input {
+            width: 15vw;
+            text-align: center;
+            border: 0px;
+            background-color: transparent;
+            color: white;
+            padding: 0.5vh;
+            font-weight: 700;
+            font-size:5vh !important;
+            justify-content: center;
+            justify-items: center;
+             height:7vh
+        }
+        
+    </style>
+    
+    
+    
+    <div class="GameInfo">
+
+        <div class="TeamsBar Vertical">
+            <div class="Team T1">
+                <div class="TeamColor" id="t1color"></div>
+                <div class="TeamScore Center Vcenter" id="t1score">12</div>
+                <div class="TeamData Vertical Vcenter">
+                    <h3 id="t1name">Team Name</h3>
+                    <small id="t1city">TeamCity</small>
+                </div>
+            </div>
+
+
+            <div class="Team T2">
+                <div class="TeamColor" id="t2color"></div>
+                <div class="TeamScore Center Vcenter" id="t2score">523</div>
+                <div class="TeamData Vertical Vcenter">
+                    <h3 id="t2name">Team Name</h3>
+                    <small id="t2city">TeamCity</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="TimerBar Vertical Vcenter">
+
+            <div class="Center" style="margin: 0.2vh;">
+                <input type="number" id="minutes" name="minutes" required minlength="4" maxlength="8" size="10" value="00"  oninput="SendTime()" />
+                <p style="font-size:2vh">&nbsp;:&nbsp;</p>
+                <input type="number" id="seconds" name="seconds" required minlength="4" maxlength="8" size="10" value="00"  oninput="SendTime()"/>
+            </div>
+            <div class="Center" style="margin: 0vh">
+                <button class="timebutton" onclick="RunTimer()">play</button>
+                <button class="timebutton" style="width:1vh; padding-left:0; padding-right:0; ">R</button>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+        .TabPanel{width:100%; display:flex;;margin:}
+        .TabBtn{text-transform: uppercase; border-radius: 1vh 1vh 0vh 0}
+        .ScoringButton{background-color:red; color:white}
+        .FoulButton{background-color:darkslateblue; color:white}
+        .EventButton{background-color:#333; color:white}
+        
+        .ScoringButton, .FoulButton,.EventButton{ min-width:5vh;flex-shrink: 1; flex-grow: 1; }
+        
+        .PlayerButton{min-width:4vh; ; font-size:2.5vh;background-color:#444; color:white}
+        
+    </style>
+    
+    
+    <div class="GameController Vertical">
+        <div class="TabPanel" id=TabPanel>
+        <button class="TabBtn" id="T1Selector" onclick="SetCurrentTeam(0)">team 1</button>
+        <button class="TabBtn" id="T2Selector" onclick="SetCurrentTeam(1)">team 2</button>
+        
+        </div>
+    
+        <div class="ScoringPanel" id='ScoringPanel' style="flex-wrap:wrap">
+            <button class="ScoringButton">TRAS</button>
+            <button class="ScoringButton">TRAS</button>
+            <button class="ScoringButton">TRAS</button>
+            <button class="ScoringButton">TRAS</button>
+            <button class="ScoringButton">TRAS</button>
+        </div>
+        
+        <div class="EventPanel" id='EventPanel' style="flex-wrap: wrap">
+            <button class="EventButton">TRAS</button>
+            <button class="EventButton">TRAS</button>
+            <button class="EventButton">TRAS</button>
+            <button class="EventButton">TRAS</button>
+        </div>
+        
+        <div class="FoulPanel" id='FoulPanel' style="flex-wrap: wrap">
+            <button class="FoulButton">TRAS</button>
+            <button class="FoulButton">TRAS</button>
+            <button class="FoulButton">TRAS</button>
+            <button class="FoulButton">TRAS</button>
+        </div>
+        
+        <label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Players</label>
+        <div class="PlayersPanel" id="PlayersPanel" style="flex-wrap: wrap; margin:1vh">
+            <button class="PlayerButton">1</button>
+            <button class="PlayerButton">2</button>
+            <button class="PlayerButton">3</button>
+            <button class="PlayerButton">4</button>
+            <button class="PlayerButton">2</button>
+            <button class="PlayerButton">31</button>
+            <button class="PlayerButton">11</button>
+            <button class="PlayerButton">12</button>
+            <button class="PlayerButton">14</button>
+            <button class="PlayerButton">15</button>
+            <button class="PlayerButton">16</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">17</button>
+            <button class="PlayerButton">18</button>
+            <button class="PlayerButton">19</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+            <button class="PlayerButton">TRAS</button>
+        </div>
+    
+    
+    
+    
+    </div>
+    
+    
+    <ul id="messages">
+    </ul>
+    <form>
+        <textarea id="message"></textarea>
+        <button type="submit">submit</button>
+    </form>
+    <div style="clear: both; width:100%"></div>
+
+
+    
+    <script src="/socket.io/socket.io.js"></script>
+
+
+    <script>
+        
+        var socket = io();
+        var Socket = io.connect();
+        var splitUrl = window.location.href;
+        var name = splitUrl.split('/')[5];
+        var room = splitUrl.split('/')[4];
+
+        //button functions
+        document.querySelector('form').addEventListener('submit', ev => {
+            ev.preventDefault();
+            send('test', document.querySelector('#message').value);
+            console.log()
+        })
+var istimerrunning=false;
+        function RunTimer(){
+            console.log("toggle timer");
+            istimerrunning=!istimerrunning;
+            if(istimerrunning==false){
+                socket.emit('Timer Stop','',room,name);
+                chronoStop();
+            }else if (istimerrunning==true){
+                
+                socket.emit('Timer Start','',room,name);
+                
+                
+            }
+        }
+        
+        function send(type, msg) {
+            socket.emit(type, msg, room, name);
+        }
+
+        //Socket functions
+        var incomingmessage = function(msg, Name) {
+
+            var id = "people " + Name;
+            if (Name == name) {
+                id = "me " + Name
+            };
+            var li = document.createElement('li');
+            li.className = id;
+            li.innerHTML = '<p>' + msg + '</p>' + '<small>' + Name + '</small>';
+            document.getElementById('messages').append(li);
+
+        }
+
+
+        //Connect to room
+        socket.emit('create', room);
+
+        send('request Init',"");
+      
+
+    </script>
+    <script src="socketcommands.js"></script>
+<script>
+    
+    </script>
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <meta name="apple-mobile-web-app-capable" content ="yes">
+    <meta name="mobile-web-app-capable" content ="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        html,body{background-color:rgb(29, 30, 34);; color:white; font-family: helvetica,segoe ui, roboto, arial, sans-serif;font-size:2vh; margin:0;padding:0; font-weight:bold}
+        textarea{height:5vh; width:20vh;resize: none;background-color:rgb(38, 41, 50);color:white; font-size:2vh; font-weight:bold;padding:1vh; border:0;}
+        p{margin:0;padding:0; text-transform: uppercase; }
+        button{font-size:2vh; padding:1vh; min-width:15vh; border: 0px; background-color: white; font-weight:900; text-transform: uppercase}
+        div{display:flex}
+        
+        div {outline:0px solid blue}
+        #container{height:100vh; flex-grow:1}
+        #lower,#upper{flex-grow:1; align-items: center; justify-content: center }
+        #lower{justify-content: flex-start;padding-top: 10vh; height:50vh}
+        #logo { width:55vh}
+        #bottom{}
+        button,button:active, button:focus,textarea,textarea:active, textarea:focus{outline:0;border:0;text-transform:uppercase}
+    
+    
+    </style>
+    
+    </head>
+    
+    <body>
+    
+        <div id="container" style="display:flex; flex-direction: column;">
+        
+            <div id="upper" style="display:flex; flex-direction: column">
+        
+        <img id="logo" src="https://strmr.fr/wp-content/uploads/2020/07/splash.jpg"/>
+        
+        </div>
+            
+        <div id="lower" style="display:flex; flex-direction: column">
+            <p style="margin:1vh">Your name</p>
+            <textarea id="myname" rows="1" maxlength="12" placeholder="Name" style="width: 35vh"></textarea>
+            <br/><br/>
+        <p>room name</p>
+            
+            <div style="margin:1vh">
+        <textarea id="RoomName" rows="1" maxlength="8" placeholder="ROOM ID"></textarea>
+        <button id="SubmitBtn" onclick="GotoRoom()" >connect</button>
+        </div>
+        </div>
+            
+            
+        <div id="bottom" style="display:flex; flex-direction: column;background-color:rgb(38, 41, 50);color:grey; padding:10px; font-size:1.5vh">
+        <p>Copyright StrmR Studio</p>
+        
+        
+        </div>
+        
+        
+        </div>
+    
+        
+        <script src="/js/jquery.min.js" ></script>
+        
+        <script>
+            function GotoRoom(){
+              var room = document.getElementById('RoomName').value;
+                if(room!=''){
+                    room=room.replace(/\s/g, '').toUpperCase();
+                
+                var name = document.getElementById("myname").value;
+                    if(name!=''){
+                    name=Slugify(name.toLowerCase()).replace(" ","")
+                        .toUpperCase();
+                    }
+                    else{
+                        name=(Math.floor(Math.random()*1000)).toString();
+                    }
+
+                window.location.href+="/"+room+name.toUpperCase()+"/"+name.toUpperCase()+"/sender";
+                    }
+                else
+                    alert("please insert room name")
+            }
+        
+            
+            function Slugify(str) {
+  str = str.replace(/^\s+|\s+$/g, ''); // trim
+  str = str.toLowerCase();
+
+  // remove accents, swap ñ for n, etc
+  var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+  var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+  for (var i=0, l=from.length ; i<l ; i++) {
+    str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+  }
+
+  str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+    .replace(/\s+/g, '-') // collapse whitespace and replace by -
+    .replace(/-+/g, '-'); // collapse dashes
+
+  return str;
+};
+        
+        </script>
+        
+    </body>
+</html>
