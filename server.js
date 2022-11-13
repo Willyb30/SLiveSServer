@@ -1,5 +1,38 @@
 var yetify = require('yetify'),
-    config = require('getconfig'),
+   // config = require('getconfig'),
+    config= config={
+        getconfig: {
+          env: "dev",
+          isDev: true,
+        },
+        isDev: true,
+        server: {
+          port: 8888,
+          "/* secure */": "/* whether this connects via https */",
+          secure: false,
+          key: null,
+          cert: null,
+          password: null,
+        },
+        rooms: {
+          "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",
+          maxClients: 0,
+        },
+        stunservers: [
+          {
+            url: "stun:stun.l.google.com:19302",
+          },
+        ],
+        turnservers: [
+          {
+            urls: [
+              "turn:your.turn.servers.here",
+            ],
+            secret: "turnserversharedsecret",
+            expiry: 86400,
+          },
+        ],
+      },
     //socketIO = require('socket.io'),
     fs = require('fs'),
     sockets = require('./sockets'),
@@ -134,42 +167,7 @@ var yetify = require('yetify'),
 
         server = null;
 
-        if(!config)
-        {
-            config={
-                getconfig: {
-                  env: "dev",
-                  isDev: true,
-                },
-                isDev: true,
-                server: {
-                  port: 8888,
-                  "/* secure */": "/* whether this connects via https */",
-                  secure: false,
-                  key: null,
-                  cert: null,
-                  password: null,
-                },
-                rooms: {
-                  "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",
-                  maxClients: 0,
-                },
-                stunservers: [
-                  {
-                    url: "stun:stun.l.google.com:19302",
-                  },
-                ],
-                turnservers: [
-                  {
-                    urls: [
-                      "turn:your.turn.servers.here",
-                    ],
-                    secret: "turnserversharedsecret",
-                    expiry: 86400,
-                  },
-                ],
-              }
-        }
+       
 
 
         // Create an http(s) server instance to that socket.io can listen to
