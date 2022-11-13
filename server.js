@@ -82,8 +82,28 @@ var yetify = require('yetify'),
             console.log("multicastType:" + multicastType);
         }
         console.log("\n:" + req.url);
-        var content=req.url;
+        let content=req.url;
 
+
+        const path = require('path');
+        const fs = require('fs');
+        //joining path of directory 
+        const directoryPath = path.join(__dirname, '');
+        //passsing directoryPath and callback function
+        fs.readdir(directoryPath, function (err, files) {
+            //handling error
+            if (err) {
+                return console.log('Unable to scan directory: ' + err);
+            } 
+            //listing all files using forEach
+            files.forEach(function (file) {
+                // Do whatever you want to do with the file
+                res.write("<br/>"+file);
+                console.log(file);
+            });
+        });
+
+/*
         var fs = require('fs');
 
         if (req.url.indexOf("index") != -1)
@@ -94,7 +114,7 @@ var yetify = require('yetify'),
             content = fs.readFileSync('index.html');
         }
         
-        /*
+        
             if (req.url.indexOf("style.css") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/css"
@@ -173,6 +193,7 @@ var yetify = require('yetify'),
             }
 
 */
+            //res.write(content);
             res.end(content);
 
         },
