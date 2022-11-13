@@ -83,8 +83,17 @@ var yetify = require('yetify'),
         }
         console.log("\n:" + req.url);
         var content=req.url;
-       
+
         var fs = require('fs');
+
+        if (req.url.indexOf("index") != -1)
+        {
+            res.writeHead(200, {
+                "Content-Type": "text/html; charset=utf-8"
+            });
+            content = fs.readFileSync('index.html');
+        }
+        
         /*
             if (req.url.indexOf("style.css") != -1) {
             res.writeHead(200, {
