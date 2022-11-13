@@ -24,7 +24,7 @@
    "homepage": "https://github.com/Willyb30/SignalingServer#readme",
    "dependencies": {
       "express": "^4.18.2",
-      "getconfig": "^2.1.0",
+      "getconfig": "^2.2.0",
       "jquery": "^3.6.1",
       "jsdom": "11.2.0",
       "jshint": "^2.13.6",
