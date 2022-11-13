@@ -1,38 +1,6 @@
 var yetify = require('yetify'),
-   // config = require('getconfig'),
-    config= config={
-        getconfig: {
-          env: "dev",
-          isDev: true,
-        },
-        isDev: true,
-        server: {
-          port: 8888,
-          "/* secure */": "/* whether this connects via https */",
-          secure: false,
-          key: null,
-          cert: null,
-          password: null,
-        },
-        rooms: {
-          "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",
-          maxClients: 0,
-        },
-        stunservers: [
-          {
-            url: "stun:stun.l.google.com:19302",
-          },
-        ],
-        turnservers: [
-          {
-            urls: [
-              "turn:your.turn.servers.here",
-            ],
-            secret: "turnserversharedsecret",
-            expiry: 86400,
-          },
-        ],
-      },
+   config = require('getconfig'),
+   
     //socketIO = require('socket.io'),
     fs = require('fs'),
     sockets = require('./sockets'),
@@ -90,7 +58,7 @@ var yetify = require('yetify'),
         let content=req.url;
 
 
-        
+        /*
         //passsing directoryPath and callback function
         fs.readdir(directoryPath, function (err, files) {
             //handling error
@@ -105,9 +73,9 @@ var yetify = require('yetify'),
             });
             res.end(content);
         });
+*/
 
-/*
-        var fs = require('fs');
+        //var fs = require('fs');
 
         if (req.url.indexOf("index") != -1)
         {
@@ -178,7 +146,7 @@ var yetify = require('yetify'),
                         content = fs.readFileSync('StreamerNew.html');
                         peerMode = 'Sender';
                     }
-                    /*else if (atts == "senderoriginal") {
+                    else if (atts == "senderoriginal") {
                         content = fs.readFileSync('Streamer_original.html');
                         peerMode = 'Sender';
                     }
@@ -195,9 +163,9 @@ var yetify = require('yetify'),
                 console.log("peerMode=" + peerMode)
             }
 
-*/
+
             //res.write(content);
-         //   res.end(content);
+            res.end(content);
 
         },
 
