@@ -37,5 +37,8 @@
       "precommit-hook": "0.3.10",
       "socket.io-client": "1.3.7",
       "tape": "^2.13.1"
-   }
+   },
+   "pre-commit":[
+      "jshint"
+   ]
 }
