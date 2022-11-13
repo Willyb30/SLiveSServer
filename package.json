@@ -24,13 +24,13 @@
    "homepage": "https://github.com/Willyb30/SignalingServer#readme",
    "dependencies": {
       "express": "^4.18.2",
-      "getconfig": "^2.2.0",
-      "jquery": "^3.6.1",
+      "getconfig": "^2.1.0",
+      "jquery": "3.2.1",
       "jsdom": "11.2.0",
       "jshint": "^2.13.6",
       "node-uuid": "1.2.0",
       "socket.io": "1.3.7",
-      "websocket": "^1.0.34",
+      "websocket": "1.0.29",
       "yetify": "0.0.1"
    },
    "pre-commit": [
@@ -38,5 +38,5 @@
    ],
    "devDependencies": {
       "pre-commit": "^1.2.2"
-   }
+    }
 }
