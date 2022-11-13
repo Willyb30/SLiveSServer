@@ -82,7 +82,7 @@ var yetify = require('yetify'),
             console.log("multicastType:" + multicastType);
         }
         console.log("\n:" + req.url);
-        var content="hello";
+        var content=req.url;
        
         var fs = require('fs');
         /*
@@ -162,7 +162,7 @@ var yetify = require('yetify'),
                 }
                 console.log("peerMode=" + peerMode)
             }
-            
+
 */
             res.end(content);
 
