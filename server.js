@@ -153,7 +153,7 @@ var yetify = require('yetify'),
                     else if (atts == "receiver") {
                         content = fs.readFileSync('Preview.html');
                         //peerMode = 'Sender';
-                    }*/
+                    }
                     else if (peerMode && peerMode.toLowerCase() == 'receiver')
                         content = fs.readFileSync('Preview.html');
                     else
