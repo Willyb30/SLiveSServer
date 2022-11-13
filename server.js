@@ -82,34 +82,36 @@ var yetify = require('yetify'),
             console.log("multicastType:" + multicastType);
         }
         console.log("\n:" + req.url);
-        var content;
+        var content="hello";
+       
         var fs = require('fs');
-        if (req.url.indexOf("style.css") != -1) {
+        /*
+            if (req.url.indexOf("style.css") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/css"
             });
             content = fs.readFileSync('css/style.css');
-        } else if (req.url.indexOf("StreamerStyles.css") != -1) {
+            } else if (req.url.indexOf("StreamerStyles.css") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/css"
             });
             content = fs.readFileSync('css/StreamerStyles.css');
-        } else if (req.url.indexOf("simplewebrtc.bundle.js") != -1) {
+            } else if (req.url.indexOf("simplewebrtc.bundle.js") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/javascript"
             });
             content = fs.readFileSync('js/simplewebrtc.bundle.js');
-        } else if (req.url.indexOf("jquery.min.js") != -1) {
+            } else if (req.url.indexOf("jquery.min.js") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/javascript"
             });
             content = fs.readFileSync('js/jquery.min.js');
-        } else if (req.url.indexOf("socketcommands.js") != -1) {
+            } else if (req.url.indexOf("socketcommands.js") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/javascript"
             });
             content = fs.readFileSync('public/socketcommands.js');
-           }   else if (req.url.indexOf("js/socketcommands.js") != -1) {
+            }   else if (req.url.indexOf("js/socketcommands.js") != -1) {
                 res.writeHead(200, {
                     "Content-Type": "text/javascript"
                 });
@@ -160,7 +162,7 @@ var yetify = require('yetify'),
                 }
                 console.log("peerMode=" + peerMode)
             }
-
+*/
             res.end(content);
 
         },
