@@ -1,5 +1,5 @@
 {
-  "isDev": true,
+  "isDev": true, 
   "server": {
     "port": 8889,
     "/* secure */": "/* whether this connects via https */",
