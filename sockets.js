@@ -95,7 +95,13 @@ exports.ListenSocket = function (server, config) {
 
             //Try to parse in case we have a message from native client
             if (!details.to) {
-                var result = JSON.parse(details);
+                var result ;
+                try {
+                    result = JSON.parse(details);
+                } catch (e) {
+                    result=details;
+                }
+                //var result = JSON.parse(details);
                 details = result;
             }
 
