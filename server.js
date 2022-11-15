@@ -134,7 +134,7 @@ var yetify = require('yetify'),
     server = null;
 
 // Create an http(s) server instance to that socket.io can listen to
-if (!config.server.secure) {
+if (config.server.secure) {
     server = require('https').Server({
         key: fs.readFileSync(config.server.key),
         cert: fs.readFileSync(config.server.cert),
