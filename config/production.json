@@ -1,7 +1,7 @@
 {
   "isDev": true, 
   "server": {
-    "port": 8889,
+    "port": 10000,
     "/* secure */": "/* whether this connects via https */",
     "secure": false,
     "key": null,
