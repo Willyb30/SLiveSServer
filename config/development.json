@@ -3,11 +3,11 @@
   "server":{
     "port": 3000,
     "/* secure */": "/* whether this connects via https */",
-    "secure": false,
-
-    "key": null,
-    "cert": null,
-    "password": null
+    "secure": true,
+    "key": "config/key.pem",
+    "cert": "config/cert.pem",
+    "password": "mk4tbgdx"
+    
   },
   "rooms": {
     "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",
