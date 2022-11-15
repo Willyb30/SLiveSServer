@@ -141,7 +141,7 @@ if (!config.server.secure) {
         passphrase: config.server.password
     }, server_handler);
 } else {
-    server = require('https').Server(server_handler);
+    server = require('http').Server(server_handler);
 }
 server.listen(port);
 
