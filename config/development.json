@@ -1,12 +1,12 @@
 {
   "isDev": true, 
   "server":{
-    "port": 3000,
+    "port": 10000,
     "/* secure */": "/* whether this connects via https */",
-    "secure": true,
-    "key": "config/key.pem",
-    "cert": "config/cert.pem",
-    "password": "mk4tbgdx"
+    "secure": false,
+    "key": null,
+    "cert": null,
+    "password": null
     
   },
   "rooms": {
