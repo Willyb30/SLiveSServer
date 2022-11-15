@@ -1,13 +1,12 @@
-{
+  {
   "isDev": true, 
-  "server":{
+  "server": {
     "port": 10000,
     "/* secure */": "/* whether this connects via https */",
     "secure": false,
-    "key": null,
-    "cert": null,
-    "password": null
-    
+    "key": "/etc/secrets/key.pem",
+    "cert": "/etc/secrets.cert.pem",
+    "password": "mk4tbgdx"
   },
   "rooms": {
     "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",

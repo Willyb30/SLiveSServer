@@ -1,11 +1,3 @@
-/*import socketIO from 'socket.io';
-import uuid from 'node-uuid';
-import crypto from 'crypto';
-//import janusSrc from './janus';
-//import wowzaSrc from './wowza';
-exports = module.exports = {};
-import W3CWebSocket from 'websocket';//.w3cwebsocket;
-*/
 var socketIO = require('socket.io'),
     uuid = require('node-uuid'),
     crypto = require('crypto'),
@@ -27,6 +19,7 @@ exports.ListenSocket = function (server, config) {
     exports.io = io;
 
     io.sockets.on('connection', function (client) {
+        console.log("connection :")
         client.resources = {
             screen: false,
             video: true,
@@ -35,6 +28,7 @@ exports.ListenSocket = function (server, config) {
 
         //set nickname
         client.on('nickname', function (nickName) {
+            console.log("nickname :"+nickname)
             if (!client.customProps)
                 client.customProps = {};
             if (!nickName || nickName == client.customProps.nickName) return;
@@ -44,6 +38,7 @@ exports.ListenSocket = function (server, config) {
 
         //set info
         client.on('setinfo', function (info) {
+            console.log("setinfo :"+info)
             //Try to parse in case we have a message from native client
             var infoParsed;
             if (info && typeof info === 'string')
@@ -86,11 +81,13 @@ exports.ListenSocket = function (server, config) {
         });
 
         client.on('getroommembers', function () {
+            console.log("*getroommembers :")
             notifyRoomMembers(client.room);
         });
 
         // pass a message to another id
         client.on('message', function (details) {
+            console.log("message :"+details)
             if (!details) return;
 
             //Try to parse in case we have a message from native client
@@ -107,6 +104,7 @@ exports.ListenSocket = function (server, config) {
 
             //Check if this is a message to Janus server from publisher
             if (details.to && details.to == 'janus') {
+                console.log("janus :"+details.to)
                 //This is a message to our Janus server
                 if (client.janusConnection && client.janusConnection.janusPlugin) {
                     if (details.type == 'offer') {
@@ -149,10 +147,12 @@ exports.ListenSocket = function (server, config) {
             if (client.janusConnection && client.janusConnection.janusPlugin && client.janusConnection.remoteFeed && details.to != 'janus') {
                 var remoteFeed = client.janusConnection.remoteFeed;
                 if (details.type == 'answer') {
+                    console.log("answer :")
                     var body = { "request": "start", "room": client.janusConnection.myRoom };
                     remoteFeed.send({ "message": body, "jsep": details.payload });
                 }
                 else if (details.type == 'candidate') {
+                    console.log("candidate :")
                     var candidate = {
                         "candidate": details.payload.candidate.candidate,
                         "sdpMid": details.payload.candidate.sdpMid,
@@ -221,6 +221,7 @@ exports.ListenSocket = function (server, config) {
         client.on('join', join);
 
         function join(name, cb) {
+            console.log("*join:"+name)
             // sanity check
             if (typeof name !== 'string') return;
             // check if maximum number of clients reached
@@ -233,6 +234,7 @@ exports.ListenSocket = function (server, config) {
             if (client.room != name)
                 removeFeed();
 
+                console.log("valid? "+client.invalidId)
             //Check if client has valid id
             if (client.invalidId)
                 return;
@@ -335,8 +337,11 @@ exports.ListenSocket = function (server, config) {
             //Janus allow only numeric rooms
             client.customProps.mode = client.customProps.mode || '';
             if (client.customProps.mode == 'sender')
-                client.janusRoom = Math.floor(new Date().valueOf() * Math.random());
-            else if (client.customProps.mode == 'receiver' && targetPeerId) {
+            {
+                console.log("sender :")
+            client.janusRoom = Math.floor(new Date().valueOf() * Math.random());
+        }
+                else if (client.customProps.mode == 'receiver' && targetPeerId) {
                 var publisherClient = io.sockets.adapter.nsp.connected[targetPeerId];
                 if (publisherClient && publisherClient.janusRoom)
                     client.janusRoom = publisherClient.janusRoom;
@@ -626,6 +631,7 @@ exports.ListenSocket = function (server, config) {
         }
 
         function removeFeed(type) {
+            console.log("remove feed");
             if (client.room) {
                 client.leaving = true;
                 io.sockets.in(client.room).emit('remove', {
@@ -667,6 +673,7 @@ exports.ListenSocket = function (server, config) {
         // we don't want to pass "leave" directly because the
         // event type string of "socket end" gets passed too.
         client.on('disconnect', function () {
+            console.log("disconnect :")
             removeFeed();
         });
         client.on('leave', function () {
@@ -674,6 +681,7 @@ exports.ListenSocket = function (server, config) {
         });
 
         client.on('create', function (name, cb) {
+            console.log("create :"+name)
             if (arguments.length == 2) {
                 cb = (typeof cb == 'function') ? cb : function () { };
                 name = name || uuid();
@@ -710,6 +718,7 @@ exports.ListenSocket = function (server, config) {
         // allow selectively vending turn credentials based on origin.
         var origin = client.handshake.headers.origin;
         if (!config.turnorigins || config.turnorigins.indexOf(origin) !== -1) {
+            console.log("turn servers")
             config.turnservers.forEach(function (server) {
                                 if (isRealStrProp(server, 'username') && isRealStrProp(server, 'credential')) {
                     credentials.push({
@@ -737,6 +746,7 @@ exports.ListenSocket = function (server, config) {
         console.log('Client Id: ' + client.id + ' Connected to signaling');
 
         function destroyJanusRoom(roomName) {
+            console.log("destroy janus :"+roomName)
             if (roomName.length === 0 || !client.janusURL)
                 return;
 
@@ -782,6 +792,7 @@ exports.ListenSocket = function (server, config) {
         }
 
         function createJanusRoom(roomName, videoCodec, videoBitrate, plugin, callbaks) {
+            console.log("create janus :")
             if (roomName.length === 0) {
                 console.log('Empty room name');
             } else {
@@ -817,6 +828,7 @@ exports.ListenSocket = function (server, config) {
     });
 
     function describeRoom(name) {
+        console.log("describe room");
         var adapter = io.nsps['/'].adapter;
         var clients = adapter.rooms[name] || {};
         var result = {
@@ -835,6 +847,7 @@ exports.ListenSocket = function (server, config) {
     }
 
     function notifyRoomMembers(room) {
+        console.log("notify room members :"+room)
         var result = {
             clients: []
         };
@@ -861,10 +874,12 @@ exports.ListenSocket = function (server, config) {
     }
 
     function clientsInRoom(name) {
+        console.log("clients in room :")
         return io.sockets.clients(name).length;
     }
 
     function isRealObj(obj) {
+        console.log("isrealobj :")
         return obj && obj !== 'null' && obj !== 'undefined';
     }
 
