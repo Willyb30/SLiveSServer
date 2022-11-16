@@ -3,7 +3,7 @@
   "server": {
     "port": 10000,
     "/* secure */": "/* whether this connects via https */",
-    "secure": true,
+    "secure": false,
     "key": "/etc/secrets/key.pem",
     "cert": "/etc/secrets.cert.pem",
     "password": "mk4tbgdx"

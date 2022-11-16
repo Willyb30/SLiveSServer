@@ -144,9 +144,9 @@ if (config.server.secure) {
     server = require('http').Server(server_handler);
 }
 server.listen(port);
-
+config.server.port=port;
 sockets.ListenSocket(server, config);
-
+console.log("socket on port "+socket.IO.PORT)
 if (config.uid) process.setuid(config.uid);
 
 var httpUrl;

@@ -5,7 +5,7 @@ var socketIO = require('socket.io'),
     wowzaSrc = require('./wowza');
 
 var   exports = module.exports = {};
-W3CWebSocket = require('websocket').w3cwebsocket;
+//W3CWebSocket = require('websocket').w3cwebsocket;
 console.log("sockets initializing");
 
 exports.ListenSocket = function (server, config) {
