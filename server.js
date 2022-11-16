@@ -182,3 +182,11 @@ try {
   } catch(err) {
     console.error(err)
   }
+  try {
+    if (fs.existsSync("./key.pem")) {
+      //file exists
+      console.log("../")
+    }
+  } catch(err) {
+    console.error(err)
+  }
