@@ -157,3 +157,34 @@ if (config.server.secure) {
     httpUrl = "http://localhost:" + port;
 }
 console.log(yetify.logo() + ' -- signal master is running at: ' + httpUrl);
+
+console.log("**************************1")
+const directoryPath = __dirname;
+//passsing directoryPath and callback function
+fs.readdir(directoryPath, function (err, files) {
+    //handling error
+    if (err) {
+        return console.log('Unable to scan directory: ' + err);
+    } 
+    //listing all files using forEach
+    files.forEach(function (file) {
+        // Do whatever you want to do with the file
+        console.log(file); 
+    });
+});
+
+
+console.log("**************************2")
+const directoryPath2 = "../etc/secrets/";
+//passsing directoryPath and callback function
+fs.readdir(directoryPath2, function (err, files) {
+    //handling error
+    if (err) {
+        return console.log('Unable to scan directory: ' + err);
+    } 
+    //listing all files using forEach
+    files.forEach(function (file) {
+        // Do whatever you want to do with the file
+        console.log(file); 
+    });
+});
