@@ -158,33 +158,27 @@ if (config.server.secure) {
 }
 console.log(yetify.logo() + ' -- signal master is running at: ' + httpUrl);
 
-console.log("**************************1")
-const directoryPath = __dirname;
-//passsing directoryPath and callback function
-fs.readdir(directoryPath, function (err, files) {
-    //handling error
-    if (err) {
-        return console.log('Unable to scan directory: ' + err);
-    } 
-    //listing all files using forEach
-    files.forEach(function (file) {
-        // Do whatever you want to do with the file
-        console.log(file); 
-    });
-});
-
-
-console.log("**************************2")
-const directoryPath2 = "../etc/secrets/";
-//passsing directoryPath and callback function
-fs.readdir(directoryPath2, function (err, files) {
-    //handling error
-    if (err) {
-        return console.log('Unable to scan directory: ' + err);
-    } 
-    //listing all files using forEach
-    files.forEach(function (file) {
-        // Do whatever you want to do with the file
-        console.log(file); 
-    });
-});
+try {
+    if (fs.existsSync("./etc/secrets/key.pem")) {
+      //file exists
+      console.log("./")
+    }
+  } catch(err) {
+    console.error(err)
+  }
+  try {
+    if (fs.existsSync("/etc/secrets/key.pem")) {
+      //file exists
+      console.log("/")
+    }
+  } catch(err) {
+    console.error(err)
+  }
+  try {
+    if (fs.existsSync("../etc/secrets/key.pem")) {
+      //file exists
+      console.log("../")
+    }
+  } catch(err) {
+    console.error(err)
+  }
