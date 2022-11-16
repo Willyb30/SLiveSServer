@@ -146,7 +146,7 @@ if (config.server.secure) {
 server.listen(port);
 config.server.port=port;
 sockets.ListenSocket(server, config);
-console.log("socket on port "+socket.IO.PORT)
+//onsole.log("socket on port "+sockets.PORT)
 if (config.uid) process.setuid(config.uid);
 
 var httpUrl;
