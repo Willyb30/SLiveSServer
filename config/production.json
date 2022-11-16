@@ -1,12 +1,12 @@
 {
   "isDev": true, 
   "server": {
-    "port": 8887,
+    "port": 8885,
     "/* secure */": "/* whether this connects via https */",
-    "secure": false,
-    "key": null,
-    "cert": null,
-    "password": null
+    "secure": true,
+    "key": "/etc/secrets/server.key",
+    "cert": "/etc/secrets/server.csr",
+    "password": "my ssl password"
   },
   "rooms": {
     "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",

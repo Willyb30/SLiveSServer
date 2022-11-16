@@ -1,7 +1,7 @@
   {
   "isDev": true, 
   "server": {
-    "port": 8889,
+    "port": 8886,
     "/* secure */": "/* whether this connects via https */",
     "secure": true,
     "key": "/etc/secrets/server.key",
