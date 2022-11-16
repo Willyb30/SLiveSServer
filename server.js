@@ -3,7 +3,7 @@ var yetify = require('yetify'),
     //socketIO = require('socket.io'),
     fs = require('fs'),
     sockets = require('./sockets'),
-    port = parseInt(3000),//process.env.PORT || config.server.port, 10),
+    port = parseInt(8888),//process.env.PORT || config.server.port, 10),
     server_handler = function (req, res) {
 
         //Trim arguments
@@ -132,51 +132,8 @@ var yetify = require('yetify'),
     },
 
     server = null;
-    config.server.secure =true;
-// force ssl
-
-    server = require('https').Server({
-        key: `-----BEGIN PRIVATE KEY-----
-        MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAMd9Gqd7gBWTZ7GM
-        8xaIliCKyU+HEAuv/f4S2XiSSeqBRfadJBPl0IsqdsUC1pBxGIPBK44i955OiNL4
-        FgaSa5n6gm1A0cL7bcGKfzHhsxn3Gqy+ABHcnzx8VRiD05E3evtkz6BJodpwn8Lp
-        PvpNRfMSNuRR5jKmhUTLgZQcoFWxAgMBAAECgYBb5taQseSgC/iJY1XZ27LN6yIy
-        8RYDTGDG3Agz87D5x/RjWKF2STl542Yz/Mq8YF3a1PMr2BAbbjK6fnAnNu06gkxB
-        HJfTKps1zWOvfIjJFT3k/FOb4NWKBo+O7NBxm+vR3fvReNH1vnmf4XUmuWTJbK0r
-        nITWyXe9ZdGSASd5AQJBAOkXJ/MIBQS75vanTBh7aRvFNwkAwlWGsvK0Gulb8Xv9
-        iiElRZTlGRIGbgwU8Jv76vLHs3gobco6P6ou+wod37UCQQDbGHxxzJfSNvATSb9B
-        WL7Y1StpW+Z8OwouYXPvIK0O8iIWpO6tYd82T9Ch1f3m6jpxLzjohmO9GkIQgkkk
-        eQONAkBC7bU44Xqfa1zcQhllhjoeETjGSwOCD1Vevzxi+VWTpq986Pjb0hSqylHb
-        AkA8ac+CurjbrbAouyUAttC6jO1pAkAVxE4AxFHFCb46PFZq+JUlV7BTbFTuvLLb
-        PsVU2Ys38+hdFY+82/9gFvfkTC1IdrbNreJaf5eDHwu3NipsHDW1AkA0aZYl+a0T
-        ROGFloEhYMZYdv9fZabTCr3lFRyCEY6aLZFKT/eWU3Yu0XYY6+HkTTB4fLefR+WP
-        4bi9s0LX+Xrx
-        -----END PRIVATE KEY-----
-        `,
-        cert: `-----BEGIN CERTIFICATE-----
-        MIICajCCAdMCFBm6JZE7JedL2C5tlA4j1ovEadIkMA0GCSqGSIb3DQEBCwUAMHMx
-        CzAJBgNVBAYTAkZSMRMwEQYDVQQIDApTb21lLVN0YXRlMQ4wDAYDVQQHDAVOaW1l
-        czEOMAwGA1UECgwFU3RybVIxDjAMBgNVBAMMBVN0cm1SMR8wHQYJKoZIhvcNAQkB
-        FhBjb250YWN0QHN0cm1yLmZyMCAXDTIyMTExNDIyMTIwNFoYDzIwNTAwMzMxMjIx
-        MjA0WjBzMQswCQYDVQQGEwJGUjETMBEGA1UECAwKU29tZS1TdGF0ZTEOMAwGA1UE
-        BwwFTmltZXMxDjAMBgNVBAoMBVN0cm1SMQ4wDAYDVQQDDAVTdHJtUjEfMB0GCSqG
-        SIb3DQEJARYQY29udGFjdEBzdHJtci5mcjCBnzANBgkqhkiG9w0BAQEFAAOBjQAw
-        gYkCgYEAx30ap3uAFZNnsYzzFoiWIIrJT4cQC6/9/hLZeJJJ6oFF9p0kE+XQiyp2
-        xQLWkHEYg8ErjiL3nk6I0vgWBpJrmfqCbUDRwvttwYp/MeGzGfcarL4AEdyfPHxV
-        GIPTkTd6+2TPoEmh2nCfwuk++k1F8xI25FHmMqaFRMuBlBygVbECAwEAATANBgkq
-        hkiG9w0BAQsFAAOBgQChdchnoHLAmAA1zH6W2ePscowzSLPHkrdPbI5UJuro+CUh
-        aIlN84zSAN+atVgXN2wihUEi04UoFSgU7RaoeOvPQioYkwHWitKrpIa6CA/hgZGZ
-        EFTWF3Z5BPpZd9g7AmIsW+vIzHdcdRUKo2VQCnQr6AeIIg/kNF9VXJjNVbZJrQ==
-        -----END CERTIFICATE-----        
-        `,
-        passphrase: "mk4tbgdx"
-    }, server_handler);
-
-
-
-
-
-/*// Create an http(s) server instance to that socket.io can listen to
+ 
+// Create an http(s) server instance to that socket.io can listen to
 if (config.server.secure) {
     server = require('https').Server({
         key: fs.readFileSync(config.server.key),
@@ -186,7 +143,7 @@ if (config.server.secure) {
 } else {
     server = require('http').Server(server_handler);
 }
-*/
+
 server.listen(port);
 config.server.port=port;
 sockets.ListenSocket(server, config);
