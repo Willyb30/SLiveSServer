@@ -6,7 +6,7 @@
     "secure": true,
     "key": "/etc/secrets/server.key",
     "cert": "/etc/secrets/server.csr",
-    "password": "my ssl password"
+    "password": ""
   },
   "rooms": {
     "/* maxClients */": "/* maximum number of clients per room. 0 = no limit */",
