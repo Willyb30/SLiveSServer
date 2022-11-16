@@ -135,12 +135,26 @@ var yetify = require('yetify'),
  
 // Create an http(s) server instance to that socket.io can listen to
 if (config.server.secure) {
-    server = require('https').Server({
-        key: fs.readFileSync(config.server.key),
-        cert: fs.readFileSync(config.server.cert),
-        passphrase: config.server.password
-    }, server_handler);
+    console.log("server is secure")
+    try {
+        if (fs.existsSync("/etc/secrets/server.csr")) {
+            server = require('https').Server({
+                key: fs.readFileSync(config.server.key),
+                cert: fs.readFileSync(config.server.cert),
+                passphrase: config.server.password
+            }, server_handler);
+        }
+        else {
+            console.log("no key server is unsecure")
+            server = require('http').Server(server_handler);
+        }
+      } catch(err) {
+        console.log("key error server is unsecure")
+    server = require('http').Server(server_handler);
+      }
+   
 } else {
+    console.log("server is set to unsecure")
     server = require('http').Server(server_handler);
 }
 
