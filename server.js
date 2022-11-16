@@ -3,7 +3,7 @@ var yetify = require('yetify'),
     //socketIO = require('socket.io'),
     fs = require('fs'),
     sockets = require('./sockets'),
-    port = parseInt(8888),//process.env.PORT || config.server.port, 10),
+    port = parseInt(process.env.PORT || config.server.port, 10),
     server_handler = function (req, res) {
 
         //Trim arguments
@@ -159,9 +159,9 @@ if (config.server.secure) {
 console.log(yetify.logo() + ' -- signal master is running at: ' + httpUrl);
 
 try {
-    if (fs.existsSync("./etc/secrets/key.pem")) {
+    if (fs.existsSync("/etc/secrets/server.csr")) {
       //file exists
-      console.log("./")
+      console.log("yes")
     }
   } catch(err) {
     console.error(err)
@@ -169,23 +169,7 @@ try {
   try {
     if (fs.existsSync("/etc/secrets/key.pem")) {
       //file exists
-      console.log("/")
-    }
-  } catch(err) {
-    console.error(err)
-  }
-  try {
-    if (fs.existsSync("../etc/secrets/key.pem")) {
-      //file exists
-      console.log("../")
-    }
-  } catch(err) {
-    console.error(err)
-  }
-  try {
-    if (fs.existsSync("./key.pem")) {
-      //file exists
-      console.log("../")
+      console.log("file found")
     }
   } catch(err) {
     console.error(err)
