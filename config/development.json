@@ -3,7 +3,7 @@
   "server": {
     "port": 8886,
     "/* secure */": "/* whether this connects via https */",
-    "secure": true,
+    "secure": false,
     "key": "/etc/secrets/server.key",
     "cert": "/etc/secrets/server.csr",
     "password": ""
