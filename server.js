@@ -57,6 +57,7 @@ var yetify = require('yetify'),
             });
             content = fs.readFileSync('css/style.css');
         } 
+
         else if (req.url.indexOf("StreamerStyles.css") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/css"
@@ -69,17 +70,23 @@ var yetify = require('yetify'),
                 "Content-Type": "text/javascript"
             });
             content = fs.readFileSync('js/simplewebrtc.bundle.js');
-        } else if (req.url.indexOf("jquery.min.js") != -1) {
+        } 
+        
+        else if (req.url.indexOf("jquery.min.js") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/javascript"
             });
             content = fs.readFileSync('js/jquery.min.js');
-        } else if (req.url.indexOf("socketcommands.js") != -1) {
+        } 
+        
+        else if (req.url.indexOf("socketcommands.js") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/javascript"
             });
             content = fs.readFileSync('js/socketcommands.js');
-        } else if (req.url.indexOf("camtest") != -1) {
+        } 
+        
+        else if (req.url.indexOf("camtest") != -1) {
             res.writeHead(200, {
                 "Content-Type": "text/html; charset=utf-8"
             });
@@ -87,13 +94,17 @@ var yetify = require('yetify'),
                 content = fs.readFileSync('https://www.strmr.fr/downloads/blank.html');
             else
                 content = fs.readFileSync('Receiver.html');
-        } else if (splitted.length == 2) {
+        } 
+        
+        else if (splitted.length == 2) {
             console.log("page=" + page)
             res.writeHead(200, {
                 "Content-Type": "text/html; charset=utf-8"
             });
             content = fs.readFileSync('CamRoomSelect.html');
-        } else if (splitted.length > 3) {
+        } 
+        
+        else if (splitted.length > 2) {
             res.writeHead(200, {
                 "Content-Type": "text/html; charset=utf-8"
             });
@@ -103,7 +114,9 @@ var yetify = require('yetify'),
             } else
             if (page == "WSTime") {
                 content = fs.readFileSync('FullControl.html');
-            } else
+            } 
+            
+            else
             if (page == "WebRtc") {
                 if (atts == "sender") {
                     content = fs.readFileSync('StreamerNew.html');
@@ -117,16 +130,18 @@ var yetify = require('yetify'),
                     content = fs.readFileSync('Preview.html');
                     //peerMode = 'Sender';
                 }*/
-                
-                else if (peerMode && peerMode.toLowerCase() == 'receiver')
-                    content = fs.readFileSync('Preview.html');
+            }
+                else if (peerMode && peerMode.toLowerCase() == 'sender')
+                    {content = fs.readFileSync('Receiver.html');}
+                else if (peerMode && (peerMode.toLowerCase() == 'any' || peerMode.toLowerCase() == 'duplex'))
+                    content = fs.readFileSync('Duplex.html');
                 else
                     content = fs.readFileSync('Preview.html');
 
-            }
-            console.log("peerMode=" + peerMode)
+            
+            
         }
-
+        console.log("peerMode=" + peerMode)
         res.end(content);
 
     },
@@ -162,8 +177,10 @@ server.listen(port);
 config.server.port=port;
 sockets.ListenSocket(server, config);
 //onsole.log("socket on port "+sockets.PORT)
-if (config.uid) process.setuid(config.uid);
-
+if (config.uid) {
+    process.setuid(config.uid);
+    console.log("config uuid: "+config.uid)
+}
 var httpUrl;
 if (config.server.secure) {
     httpUrl = "https://localhost:" + port;
